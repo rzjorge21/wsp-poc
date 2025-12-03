@@ -28,8 +28,10 @@ export class WebhookController {
     @Query('hub.verify_token') token: string,
   ) {
     if (mode === 'subscribe' && token === this.verifyToken) {
+      console.log('WEBHOOK VERIFIED'); // 👈 Faltaba este log
       return challenge;
     }
+
     throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
