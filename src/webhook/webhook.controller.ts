@@ -27,8 +27,11 @@ export class WebhookController {
     @Query('hub.challenge') challenge: string,
     @Query('hub.verify_token') token: string,
   ) {
+    console.log('Ejecutando GET'); 
+    console.log('mode', mode); 
+    console.log('challenge', challenge); 
+    console.log('token', token); 
     if (mode === 'subscribe' && token === this.verifyToken) {
-      console.log('WEBHOOK VERIFIED'); // 👈 Faltaba este log
       return challenge;
     }
 
@@ -37,6 +40,8 @@ export class WebhookController {
 
   @Post()
   handleWebhook(@Body() body: any) {
+    console.log('Ejecutando POST'); 
+    console.log('body', body); 
     const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
     console.log(`\n\nWebhook received ${timestamp}\n`);
     console.log(JSON.stringify(body, null, 2));
