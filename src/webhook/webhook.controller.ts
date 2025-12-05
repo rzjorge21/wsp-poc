@@ -6,16 +6,20 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  OnModuleInit,
 } from '@nestjs/common';
+import { WebhookService } from './webhook.service';
 
 @Controller()
-export class WebhookController {
+export class WebhookController implements OnModuleInit {
   private readonly verifyToken = process.env.VERIFY_TOKEN;
 
-  constructor() {
+  constructor(private readonly webhookService: WebhookService) {}
+
+  onModuleInit() {
     if (!this.verifyToken) {
       console.error('❌ ERROR: VERIFY_TOKEN no está configurado');
-      process.exit(1);
+      throw new Error('VERIFY_TOKEN no está configurado');
     }
 
     console.log('✅ VERIFY_TOKEN configurado correctamente');
@@ -27,10 +31,10 @@ export class WebhookController {
     @Query('hub.challenge') challenge: string,
     @Query('hub.verify_token') token: string,
   ) {
-    console.log('Ejecutando GET'); 
-    console.log('mode', mode); 
-    console.log('challenge', challenge); 
-    console.log('token', token); 
+    console.log('Ejecutando GET');
+    console.log('mode', mode);
+    console.log('challenge', challenge);
+    console.log('token', token);
     if (mode === 'subscribe' && token === this.verifyToken) {
       return challenge;
     }
@@ -40,11 +44,13 @@ export class WebhookController {
 
   @Post()
   handleWebhook(@Body() body: any) {
-    console.log('Ejecutando POST'); 
-    console.log('body', body); 
-    const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
-    console.log(`\n\nWebhook received ${timestamp}\n`);
-    console.log(JSON.stringify(body, null, 2));
+    this.webhookService.handleIncoming(body);
+
+    // console.log('Ejecutando POST');
+    // console.log('body', body);
+    // const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+    // console.log(`\n\nWebhook received ${timestamp}\n`);
+    // console.log(JSON.stringify(body, null, 2));
 
     return { status: 'ok' };
   }
