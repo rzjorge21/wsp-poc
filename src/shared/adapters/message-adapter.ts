@@ -1,8 +1,8 @@
-import { UnifiedMessage } from './message.types';
+import { NormalizedMessage } from './message.types';
 
 export class MessageAdapter {
 
-  static normalize(payload: any): UnifiedMessage | null {
+  static normalize(payload: any): NormalizedMessage | null {
     if (!payload.entry?.length) return null;
 
     const entry = payload.entry[0];
@@ -17,7 +17,7 @@ export class MessageAdapter {
     const contact = value.contacts?.[0];
     const phoneId = value.metadata?.phone_number_id;
 
-    const base: UnifiedMessage = {
+    const base: NormalizedMessage = {
       wabaPhoneId: phoneId,
       senderPhone: contact?.wa_id,
       senderName: contact?.profile?.name,

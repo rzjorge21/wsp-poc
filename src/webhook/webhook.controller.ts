@@ -44,14 +44,19 @@ export class WebhookController implements OnModuleInit {
 
   @Post()
   handleWebhook(@Body() body: any) {
-    this.webhookService.handleIncoming(body);
-
-    // console.log('Ejecutando POST');
-    // console.log('body', body);
-    // const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
-    // console.log(`\n\nWebhook received ${timestamp}\n`);
-    // console.log(JSON.stringify(body, null, 2));
+    // const resp = this.webhookService.handleIncoming(body);
+    const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+    console.log(`\n\nWebhook received ${timestamp}\n`);
+    console.log(JSON.stringify(body, null, 2));
 
     return { status: 'ok' };
+  }
+
+
+  @Post('conversation')
+  testConversation(@Body() body: any) {
+    const resp = this.webhookService.handleIncoming(body);
+
+    return { status: 'ok', resp };
   }
 }

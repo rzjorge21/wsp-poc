@@ -1,4 +1,4 @@
-export interface UnifiedMessage {
+export interface NormalizedMessage {
   wabaPhoneId: string;
   senderPhone: string;
   senderName?: string;
