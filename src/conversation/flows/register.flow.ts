@@ -50,7 +50,7 @@ export class RegisterFlow {
     if (state === 'askName') {
       stateMachine.setContext('name', msg.text);
       stateMachine.setState('askDNI');
-      return { reply: `¡Registrado! Bienvenido ${msg.text}` };
+      return { reply: `¿Cuál es tu DNI?` };
     }
 
     if (state === 'askDNI') {
