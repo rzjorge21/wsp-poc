@@ -18,7 +18,14 @@ export class ConversationStateMachine {
     this.context[key] = value;
   }
 
-  getContext(key: string) {
-    return this.context[key];
-  }
+  // getContext(key: string) {
+  //   return this.context[key];
+  // }
+
+  getContext() { return this.context; }
+
+  // mergeContext(partial: any) {
+  //   console.log("CONTEXTO ACTUAL", this.context)
+  //   this.context = { ...this.context, ...partial };
+  // }
 }
